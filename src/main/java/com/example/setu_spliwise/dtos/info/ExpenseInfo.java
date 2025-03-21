@@ -1,0 +1,23 @@
+package com.example.setu_spliwise.dtos.info;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
+import java.util.UUID;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+
+@Data
+@NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = false)
+public class ExpenseInfo {
+
+  @JsonProperty(value = "id", access = JsonProperty.Access.READ_ONLY)
+  @NonNull
+  private UUID expenseId;
+
+  @NotBlank(message = "Paid By Id is required")
+  @NonNull
+  private UUID paidById;
+}

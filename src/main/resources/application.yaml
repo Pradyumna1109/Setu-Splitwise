@@ -1,0 +1,93 @@
+ds: $
+setu:
+  conf:
+    redis:
+      port: 1234
+      host: localhost
+      password: ''
+    api:
+      secret: f361d1fd6eab822c548acfbbb4b61bd385f286bc9e97b2a3acdf8442958f766c
+
+spring:
+  jackson:
+      deserialization:
+        fail-on-unknown-properties: true
+  profiles:
+    active:
+      - LOCAL
+  config:
+    name: application
+  main:
+    banner-mode: off
+  output:
+    ansi:
+      enabled: ALWAYS
+
+
+  # DB configuration.
+  datasource:
+    driverClassName: org.postgresql.Driver
+    name: default
+    username: ${DB_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+    url: jdbc:postgresql://db:5432/setu_spliwise
+    hikari:
+      maximum-pool-size: 40
+      minimum-idle: 20
+      connection-timeout: 45000
+
+  # Flyway configuration.
+  flyway:
+    url: jdbc:postgresql://db:5432/setu_spliwise
+    user: postgres
+    password: postgres
+    baseline-on-migrate: true
+    enabled: true
+
+# Expose actuator endpoints.
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      show-details: always
+  health:
+    db-scheduler:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus,info,flyway,configprops,shutdown
+endpoints:
+  shutdown:
+    enabled: true
+
+# Ebean configuration.
+ebean:
+  disableL2Cache: true
+  search:
+    packages: "com.example.setu_spliwise.models"
+  migration:
+    run: false
+  encryptionKey: my-secret-encryption-key-123456
+
+datasource:
+  username: ${DB_USER:postgres}
+  password: ${POSTGRES_PASSWORD:postgres}
+  driver: org.postgresql.Driver
+  url: jdbc:postgresql://db:5432/setu_spliwise
+
+server:
+  servlet:
+    context-path: /api/v1
+
+logging:
+  level:
+    root: INFO
+    com.yourpackage: DEBUG
+    io.ebean: DEBUG
+    io.ebean.DB: DEBUG
+  file:
+    name: application.log
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n%xEx"

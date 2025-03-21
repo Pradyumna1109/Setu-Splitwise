@@ -1,0 +1,1 @@
+ALTER TABLE USER_GROUP drop column IF EXISTS id;

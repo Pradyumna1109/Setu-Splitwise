@@ -1,0 +1,28 @@
+CREATE TABLE IF NOT EXISTS Split (
+    id UUID PRIMARY KEY,
+    amount DOUBLE PRECISION NOT NULL,
+    percentage DOUBLE PRECISION NOT NULL,
+    is_paid BOOLEAN NOT NULL DEFAULT FALSE,
+    user_id UUID NOT NULL,
+    expense_id UUID NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+ALTER TABLE Split
+ADD CONSTRAINT fk_split_user
+FOREIGN KEY (user_id)
+REFERENCES USERS(id)
+ON DELETE RESTRICT
+ON UPDATE RESTRICT;
+
+ALTER TABLE Split
+ADD CONSTRAINT fk_split_expense
+FOREIGN KEY (expense_id)
+REFERENCES Expense(id)
+ON DELETE RESTRICT
+ON UPDATE RESTRICT;
+
+CREATE INDEX idx_split_user_id ON Split(user_id);
+CREATE INDEX idx_split_expense_id ON Split(expense_id);
+
